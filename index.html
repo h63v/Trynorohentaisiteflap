@@ -3,187 +3,225 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>بطاقة محتوى احترافية</title>
-  <!-- مكتبة FontAwesome للأيقونات -->
+  <title>منصة المانجا والمانهوا</title>
+  <!-- مكتبة الأيقونات FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
+
   <style>
     :root {
-      --primary-color: #2563eb;
-      --text-color: #1e293b;
-      --bg-color: #f8fafc;
-      --card-bg: #ffffff;
-      --transition-speed: 0.3s;
+      --primary: #2563eb;
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
     }
 
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: var(--bg-color);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
+      background-color: var(--bg);
+      color: var(--text);
       margin: 0;
-      padding: 20px;
+      padding: 30px 20px;
     }
 
-    /* حاوي البطاقات */
-    .card-container {
-      display: flex;
-      gap: 25px;
-      flex-wrap: wrap;
-      justify-content: center;
+    .container {
       max-width: 1200px;
+      margin: 0 auto;
     }
 
-    /* تصميم البطاقة الرئيسي */
-    .article-card {
-      background: var(--card-bg);
-      border-radius: 16px;
+    .header-title {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 2rem;
+    }
+
+    /* شبكة البطاقات */
+    .manga-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 25px;
+    }
+
+    /* تصميم البطاقة */
+    .manga-card {
+      background-color: var(--card-bg);
+      border-radius: 14px;
       overflow: hidden;
-      width: 320px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-      transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
-      cursor: pointer;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
       position: relative;
-      text-decoration: none;
-      color: inherit;
+      cursor: pointer;
     }
 
-    .article-card:hover {
+    .manga-card:hover {
       transform: translateY(-8px);
-      box-shadow: 0 20px 35px rgba(0, 0, 0, 0.12);
+      box-shadow: 0 15px 30px rgba(37, 99, 235, 0.2);
     }
 
-    /* قسم الصورة والغلاف التفاعلي */
-    .image-wrapper {
+    /* غلاف الصورة والتراكب */
+    .poster-wrapper {
       position: relative;
       width: 100%;
-      height: 200px;
+      height: 350px;
       overflow: hidden;
     }
 
-    .image-wrapper img {
+    .poster-wrapper img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform var(--transition-speed) ease;
+      transition: transform 0.3s ease;
     }
 
-    .article-card:hover .image-wrapper img {
-      transform: scale(1.08);
+    .manga-card:hover .poster-wrapper img {
+      transform: scale(1.06);
     }
 
-    /* طبقة أيقونة القراءة والطباقة التفاعلية */
+    /* الطبقة التفاعلية عند التمرير/الضغط */
     .read-overlay {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(37, 99, 235, 0.85);
+      background: rgba(15, 23, 42, 0.85);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      color: #ffffff;
       opacity: 0;
-      transition: opacity var(--transition-speed) ease;
-      backdrop-filter: blur(2px);
+      transition: opacity 0.3s ease;
+      backdrop-filter: blur(3px);
     }
 
     .read-overlay i {
-      font-size: 2.5rem;
-      transform: scale(0.5);
-      transition: transform var(--transition-speed) cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      font-size: 3rem;
+      color: var(--primary);
+      transform: scale(0.6);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
     .read-overlay span {
-      margin-top: 8px;
-      font-weight: 600;
-      font-size: 0.95rem;
+      margin-top: 12px;
+      font-weight: bold;
+      font-size: 1.1rem;
     }
 
-    /* تأثير الظهور عند التمرير والضغط */
-    .article-card:hover .read-overlay,
-    .article-card:active .read-overlay {
+    .manga-card:hover .read-overlay,
+    .manga-card:active .read-overlay {
       opacity: 1;
     }
 
-    .article-card:hover .read-overlay i,
-    .article-card:active .read-overlay i {
+    .manga-card:hover .read-overlay i,
+    .manga-card:active .read-overlay i {
       transform: scale(1);
     }
 
-    /* محتوى البطاقة */
-    .card-content {
-      padding: 20px;
+    /* تفاصيل البطاقة */
+    .info {
+      padding: 18px;
     }
 
-    .tag {
-      display: inline-block;
-      background-color: #e0e7ff;
-      color: var(--primary-color);
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      margin-bottom: 12px;
+    .badge-container {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
     }
 
-    .card-title {
+    .badge {
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+
+    .badge.type { background: #3b82f6; color: #fff; }
+    .badge.status-ongoing { background: #22c55e; color: #fff; }
+    .badge.status-completed { background: #ef4444; color: #fff; }
+
+    .title {
       font-size: 1.2rem;
-      font-weight: 7rem;
-      margin: 0 0 10px 0;
-      color: var(--text-color);
-      line-height: 1.4;
+      margin: 0 0 8px 0;
     }
 
-    .card-description {
-      font-size: 0.9rem;
-      color: #64748b;
-      line-height: 1.6;
-      margin: 0;
+    .synopsis {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      line-height: 1.5;
     }
   </style>
 </head>
 <body>
 
-  <div class="card-container">
-    
-    <!-- بطاقة 1 -->
-    <a href="#" class="article-card">
-      <div class="image-wrapper">
-        <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=800&q=80" alt="صورة المقال">
-        <div class="read-overlay">
-          <i class="fa-solid fa-book-open-reader"></i>
-          <span>اضغط للقراءة</span>
-        </div>
-      </div>
-      <div class="card-content">
-        <span class="tag">تقنية</span>
-        <h3 class="card-title">دليل تصميم واجهات المستخدم الحديثة 2026</h3>
-        <p class="card-description">استكشف أحدث الاتجاهات والتقنيات لبناء تجربة مستخدم سلسة وجذابة...</p>
-      </div>
-    </a>
-
-    <!-- بطاقة 2 -->
-    <a href="#" class="article-card">
-      <div class="image-wrapper">
-        <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=800&q=80" alt="صورة المقال">
-        <div class="read-overlay">
-          <i class="fa-solid fa-pen-nib"></i>
-          <span>دخول للمقال</span>
-        </div>
-      </div>
-      <div class="card-content">
-        <span class="tag">تطوير</span>
-        <h3 class="card-title">كيف تكتب كوداً أنظيفاً واحترافياً؟</h3>
-        <p class="card-description">نصائح وإرشادات علمية لمساعدتك على تحسين جودة برمجتك وسهولة صيانتها...</p>
-      </div>
-    </a>
-
+  <div class="container">
+    <h1 class="header-title">مكتبة الأعمال</h1>
+    <div class="manga-grid" id="mangaContainer">
+      <!-- يتم تحميل البطاقات برمجياً هنا -->
+    </div>
   </div>
 
+  <script>
+    // قائمة المجلدات الموجودة داخل مجلد mangamanhwa
+    const worksFolders = ['One Piece', 'Solo Leveling']; 
+
+    const container = document.getElementById('mangaContainer');
+
+    async function loadWorks() {
+      for (const folder of worksFolders) {
+        try {
+          // جلب ملف HTML الخاص بالعمل داخل مجلده
+          const response = await fetch(`./mangamanhwa/${folder}/${folder}.html`);
+          const htmlText = await response.text();
+
+          // تحويل النص إلى عنصر DOM لسهولة استخراج البيانات
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(htmlText, 'text/html');
+
+          // استخراج البيانات من داخل الملف
+          const title = doc.querySelector('.work-title')?.textContent || folder;
+          const image = doc.querySelector('.work-image')?.getAttribute('src') || `./mangamanhwa/${folder}/cover.jpg`;
+          const type = doc.querySelector('.work-type')?.textContent || 'مانجا';
+          const status = doc.querySelector('.work-status')?.textContent || 'مستمر';
+          const synopsis = doc.querySelector('.work-synopsis')?.textContent || 'لا يوجد وصف...';
+          const statusClass = status.includes('مكتمل') ? 'status-completed' : 'status-ongoing';
+
+          // رابط الانتقال لصفحة العمل أو الفصل الأول
+          const workUrl = `./mangamanhwa/${folder}/${folder}.html`;
+
+          // إنشاء البطاقة Dynamically
+          const cardHTML = `
+            <a href="${workUrl}" class="manga-card">
+              <div class="poster-wrapper">
+                <img src="${image}" alt="${title}">
+                <div class="read-overlay">
+                  <i class="fa-solid fa-book-open"></i>
+                  <span>دخول للقراءة</span>
+                </div>
+              </div>
+              <div class="info">
+                <div class="badge-container">
+                  <span class="badge type">${type}</span>
+                  <span class="badge ${statusClass}">${status}</span>
+                </div>
+                <h3 class="title">${title}</h3>
+                <p class="synopsis">${synopsis}</p>
+              </div>
+            </a>
+          `;
+
+          container.innerHTML += cardHTML;
+        } catch (error) {
+          console.error(`خطأ في تحميل العمل: ${folder}`, error);
+        }
+      }
+    }
+
+    // تشغيل الدالة عند تحميل الصفحة
+    loadWorks();
+  </script>
 </body>
 </html>
