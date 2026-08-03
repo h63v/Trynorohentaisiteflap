@@ -1,1 +1,307 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تفاصيل العمل</title>
+  <!-- مكتبة FontAwesome للأيقونات -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+  <style>
+    :root {
+      --primary: #2563eb;
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* زر العودة */
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-bottom: 20px;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+    .back-btn:hover { color: var(--primary); }
+
+    /* تفاصيل العمل (Header) */
+    .work-header {
+      display: flex;
+      gap: 30px;
+      background: var(--card-bg);
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      flex-wrap: wrap;
+    }
+
+    .poster-box {
+      width: 220px;
+      height: 320px;
+      flex-shrink: 0;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+    }
+
+    .poster-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .details-box {
+      flex: 1;
+      min-width: 280px;
+    }
+
+    .work-title {
+      font-size: 2rem;
+      margin: 0 0 15px 0;
+    }
+
+    .badges {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .badge {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: bold;
+    }
+
+    .work-type { background: #3b82f6; color: #fff; }
+    .work-status { background: #22c55e; color: #fff; } /* استخدم status-completed إذا كان مكتمل */
+
+    .synopsis-title {
+      font-size: 1.1rem;
+      margin: 20px 0 8px 0;
+      color: var(--primary);
+    }
+
+    .work-synopsis {
+      color: var(--text-muted);
+      line-height: 1.7;
+      font-size: 0.95rem;
+      margin: 0;
+    }
+
+    /* قسم الفصول */
+    .chapters-section {
+      margin-top: 40px;
+    }
+
+    .section-title {
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+      border-bottom: 2px solid var(--card-bg);
+      padding-bottom: 10px;
+    }
+
+    .chapters-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 15px;
+    }
+
+    /* زر الفصل */
+    .chapter-card {
+      background: var(--card-bg);
+      padding: 15px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--text);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+      cursor: pointer;
+    }
+
+    .chapter-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-3px);
+      background: #26334d;
+    }
+
+    /* تفاعل الضغط وحدوث أيقونة الكتابة والقراءة */
+    .chapter-card:active i {
+      transform: scale(1.3) rotate(-10deg);
+      color: var(--primary);
+    }
+
+    .chapter-card i {
+      transition: transform 0.2s ease, color 0.2s ease;
+      color: var(--text-muted);
+    }
+
+    /* عارض الصور (Reader) */
+    .reader-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 1000;
+      overflow-y: auto;
+      padding: 20px 0;
+    }
+
+    .reader-modal.active { display: block; }
+
+    .reader-content {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .reader-content img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 5px;
+    }
+
+    .close-reader {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      z-index: 1001;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <a href="../../index.html" class="back-btn">
+      <i class="fa-solid fa-arrow-right"></i> العودة للمكتبة
+    </a>
+
+    <!-- بيانات العمل -->
+    <div class="work-header">
+      <div class="poster-box">
+        <!-- صورة غلاف العمل -->
+        <img class="work-image" src="./cover.jpg" alt="غلاف العمل">
+      </div>
+      <div class="details-box">
+        <h1 class="work-title">ون بيس (One Piece)</h1>
+        
+        <div class="badges">
+          <span class="badge work-type">مانجا</span>
+          <span class="badge work-status">مستمر</span>
+        </div>
+
+        <h3 class="synopsis-title">قصة العمل:</h3>
+        <p class="work-synopsis">
+          تبدأ السلسلة بإعدام غول دي روجر، الرجل المعروف بلقب ملك القراصنة. قبل موته، أعلن روجر أن كنزة الـ "ون بيس" سيكون متاحاً لأي شخص يعثر عليه، مما بدأ عصر القراصنة العظيم. ينطلق مونكي دي لوفي في رحلة للبحث عن الكنز والوصول للقب ملك القراصنة.
+        </p>
+      </div>
+    </div>
+
+    <!-- قائمة الفصول -->
+    <div class="chapters-section">
+      <h2 class="section-title"><i class="fa-solid fa-list-ol"></i> قائمة الفصول</h2>
+      
+      <div class="chapters-list" id="chaptersList">
+        <!-- يتم توليد الفصول تلقائياً أو إضافتها يدوياً -->
+      </div>
+    </div>
+  </div>
+
+  <!-- عارض الصور عند الضغط على الفصل -->
+  <div class="reader-modal" id="readerModal">
+    <button class="close-reader" onclick="closeReader()"><i class="fa-solid fa-xmark"></i> إغلاق القارئ</button>
+    <div class="reader-content" id="readerImages">
+      <!-- يتم تحميل صور الفصل هنا -->
+    </div>
+  </div>
+
+  <script>
+    // قائمة الفصول المتاحة في المجلد
+    // يمكنك زيادة الفصول هنا بسهولة ['الفصل 1', 'الفصل 2', 'الفصل 3']
+    const chapters = ['الفصل 1']; 
+
+    // صور كل فصل (إذا كانت أسماء الصور ثابتة مثل 01.jpg, 02.jpg..)
+    const chapterImages = {
+      'الفصل 1': ['./الفصل 1/01.jpg', './الفصل 1/02.jpg', './الفصل 1/03.jpg']
+    };
+
+    const chaptersContainer = document.getElementById('chaptersList');
+
+    // عرض الفصول
+    function renderChapters() {
+      chapters.forEach(ch => {
+        const btn = document.createElement('div');
+        btn.className = 'chapter-card';
+        btn.innerHTML = `
+          <span>${ch}</span>
+          <i class="fa-solid fa-pen-nib"></i>
+        `;
+        btn.onclick = () => openChapter(ch);
+        chaptersContainer.appendChild(btn);
+      });
+    }
+
+    // فتح عارض الفصول وقراءة الصور
+    function openChapter(chapterName) {
+      const readerModal = document.getElementById('readerModal');
+      const readerImages = document.getElementById('readerImages');
+      readerImages.innerHTML = '';
+
+      const images = chapterImages[chapterName] || [];
+
+      if(images.length === 0) {
+        readerImages.innerHTML = '<p style="color:white; margin-top:50px;">لا توجد صور لهذا الفصل حالياً.</p>';
+      } else {
+        images.forEach(src => {
+          const img = document.createElement('img');
+          img.src = src;
+          readerImages.appendChild(img);
+        });
+      }
+
+      readerModal.classList.add('active');
+      document.body.style.overflow = 'hidden'; // منع التمرير في الخلفية
+    }
+
+    // إغلاق العارض
+    function closeReader() {
+      document.getElementById('readerModal').classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+
+    renderChapters();
+  </script>
+
+</body>
+  </html> 
